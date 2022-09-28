@@ -115,6 +115,7 @@
     </v-dialog>
   </v-row>
 </template>
+
     </v-col>
     </v-row>
     <v-row class="text-center">
@@ -143,6 +144,126 @@
               
                 <td>
                     <v-btn  @click="updateHotel(hotel.data.hotel_id)" fab small color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
+<!-- modal para ver las habitaciones -->
+<template>
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog2"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+        fab 
+        small
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          @click="getRooms(hotel.data.hotel_id)"
+        >
+        <v-icon>mdi-eye</v-icon>
+        </v-btn>
+      </template>
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            @click="dialog2 = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Habitaciones</v-toolbar-title>
+          <v-spacer></v-spacer>
+        
+        </v-toolbar>
+        <v-list
+          three-line
+          subheader
+        >
+          <v-subheader>Tabla</v-subheader>
+        <template>
+  <v-container fluid>
+    <v-data-iterator
+      :items="items"
+      :items-per-page.sync="itemsPerPage"
+      hide-default-footer
+    >
+      <template v-slot:header>
+        <v-toolbar
+          class="mb-2"
+          color="indigo darken-5"
+          dark
+          flat
+        >
+          <v-toolbar-title>Habitaciones</v-toolbar-title>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:default="props">
+        <v-row>
+          <v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <v-card>
+              <v-card-title class="subheading font-weight-bold">
+                {{ item.accommodation }}
+              </v-card-title>
+
+              <v-divider></v-divider>
+
+              <v-list dense>
+                <v-list-item>
+                  <v-list-item-content>Cantidad:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.amount }}
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Tipo Habitacion:</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.type_room }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-slot:footer>
+        <v-toolbar
+          class="mt-2"
+          color="indigo"
+          dark
+          flat
+        >
+          <v-toolbar-title class="subheading">
+            Reservas
+          </v-toolbar-title>
+        </v-toolbar>
+      </template>
+    </v-data-iterator>
+  </v-container>
+</template>
+         
+     
+        </v-list>
+      </v-card>
+    </v-dialog>
+  </v-row>
+</template>
                    
                 </td>
             </tr>
@@ -160,11 +281,14 @@ import swal from 'sweetalert';
 export default {
     name:'listHotel',
     mounted(){
-        this.obtenerArticulos();
+        this.getHotel();
+       /*  this.getRoom(); */
     },
     data(){
-        return{            
+        return{    
+                  
             dialog:false,
+            dialog2:false,
             hotels:null,
             id:null,
             snackbar:false,
@@ -174,20 +298,36 @@ export default {
                 type_room: '',
                 accommodation: '',
                 hotel_id: '',
-            }
+            },
+              itemsPerPage: 4,
+      items: [],
+
+  
         }
     },
     methods:{
-        obtenerArticulos(){
+        getHotel(){
             axios.get('http://0.0.0.0/api/hotel')
             .then(r => {
                 this.hotels = r.data.data;
-                console.log(this.hotels);
             })
             .catch(function(error){
                 console.log(error);
             })
 
+        },
+        getRooms(id){
+            axios.get('http://0.0.0.0/api/hotel/' + id)
+            .then(response => {
+              console.log(response.data.rooms);
+                this.items = response.data.rooms;
+            })
+          
+          
+            .catch(function(error){
+                console.log(error);
+            })
+        
         },
         assignedRoom(){
          
