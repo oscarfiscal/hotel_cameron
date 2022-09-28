@@ -9,6 +9,8 @@ import VueRouter from 'vue-router';
 import inicio from './components/Inicio';
 import listHotel from './components/ListHotel';
 import createHotel from './components/CreateHotel';
+import updateHotel from './components/UpdateHotel';
+
 
 
 
@@ -16,6 +18,8 @@ import createHotel from './components/CreateHotel';
 Vue.component('inicio', inicio);
 Vue.component('listHotel', listHotel);
 Vue.component('createHotel', createHotel);
+Vue.component('updateHotel', updateHotel);
+
 
 
 
@@ -28,7 +32,8 @@ const routes = [
   {path:'/', component:inicio},
   {path:'/inicio',component:inicio},
   {path:'/hoteles', component:listHotel},
-  {path:'/crear', component:createHotel, name:'createHotel'}
+  {path:'/crear', component:createHotel, name:'createHotel'},
+  {path:'/editar/:id', component:updateHotel, name:'updateHotel'},
   
  
 ]

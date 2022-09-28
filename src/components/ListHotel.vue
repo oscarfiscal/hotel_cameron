@@ -143,7 +143,7 @@
                 <td>{{hotel.data.attributes.nit}}</td>
               
                 <td>
-                    <v-btn  @click="updateHotel(hotel.data.hotel_id)" fab small color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <v-btn :to="{name:'updateHotel', params:{id:hotel.data.hotel_id} }" fab small color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
 <!-- modal para ver las habitaciones -->
 <template>
   <v-row justify="center">
@@ -289,6 +289,7 @@ export default {
                   
             dialog:false,
             dialog2:false,
+            dialog3:false,
             hotels:null,
             id:null,
             snackbar:false,
@@ -298,6 +299,13 @@ export default {
                 type_room: '',
                 accommodation: '',
                 hotel_id: '',
+            },
+              hl:{
+                name:'',
+                city:'',
+                num_rooms:'',
+                adress:'',
+                nit:''
             },
               itemsPerPage: 4,
       items: [],
@@ -319,7 +327,7 @@ export default {
         getRooms(id){
             axios.get('http://0.0.0.0/api/hotel/' + id)
             .then(response => {
-              console.log(response.data.rooms);
+
                 this.items = response.data.rooms;
             })
           
@@ -368,6 +376,5 @@ export default {
             })
                   }
         },
-      
 }
 </script>
