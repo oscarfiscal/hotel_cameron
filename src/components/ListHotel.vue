@@ -315,7 +315,7 @@ export default {
     },
     methods:{
         getHotel(){
-            axios.get('http://0.0.0.0/api/hotel')
+            axios.get('https://damp-retreat-18356.herokuapp.com/api/hotel')
             .then(r => {
                 this.hotels = r.data.data;
             })
@@ -325,7 +325,7 @@ export default {
 
         },
         getRooms(id){
-            axios.get('http://0.0.0.0/api/hotel/' + id)
+            axios.get('https://damp-retreat-18356.herokuapp.com/api/hotel/' + id)
             .then(response => {
 
                 this.items = response.data.rooms;
@@ -346,7 +346,7 @@ export default {
                   formData.append('accommodation',this.room.accommodation);
                   formData.append('hotel_id',this.room.hotel_id);
              
-            axios.post('http://0.0.0.0/api/room',formData)
+            axios.post('https://damp-retreat-18356.herokuapp.com/api/room',formData)
             .then(r => {
                 console.log(r);
                 this.dialog = false;

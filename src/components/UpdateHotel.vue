@@ -59,7 +59,7 @@ export default {
     mounted(){
       this.id = this.$route.params.id;
       console.log(this.$route);
-      axios.get('http://0.0.0.0/api/hotel/?id='+this.id)
+      axios.get('https://damp-retreat-18356.herokuapp.com/api/hotel/?id='+this.id)
       .then(r =>{
         this.hotel = r.data;
       })
@@ -82,7 +82,7 @@ export default {
     methods:{
       updateHotel(){
          var router =  this.$router;
-        axios.put('http://0.0.0.0/api/hotel/'+this.id,
+        axios.put('https://damp-retreat-18356.herokuapp.com/api/hotel/'+this.id,
         {
           name:this.hotel.name,
           city:this.hotel.city,

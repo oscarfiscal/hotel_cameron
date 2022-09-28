@@ -78,7 +78,7 @@ export default {
                 formData.append('nit',this.hotel.nit);
               
           
-           axios.post('http://0.0.0.0/api/hotel',formData)
+           axios.post('https://damp-retreat-18356.herokuapp.com/api/hotel',formData)
            .then(()=>{
                router.push('/hoteles');
            })
