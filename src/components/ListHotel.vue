@@ -39,7 +39,7 @@
                 <td>{{hotel.data.attributes.nit}}</td>
               
                 <td>
-                    <v-btn :to="{name:'updateHotel', params:{id:hotel.id}}" fab small color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <v-btn  @click="updateHotel(hotel.data.hotel_id)" fab small color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
                    
                 </td>
             </tr>
@@ -88,12 +88,14 @@ export default {
             axios.get('http://0.0.0.0/api/hotel')
             .then(r => {
                 this.hotels = r.data.data;
+                console.log(this.hotels);
             })
             .catch(function(error){
                 console.log(error);
             })
 
         },
+       
     }
 }
 </script>

@@ -14,7 +14,7 @@
               <v-list-item-title>Inicio</v-list-item-title>
             </v-list-item-content>
           </v-list-item>                    
-           <v-list-item :to="{path: '/articulos'}">
+           <v-list-item :to="{path: '/hoteles'}">
             <v-list-item-action>
               <v-icon>mdi-{{ icons[1] }}</v-icon>
             </v-list-item-action>
