@@ -13,6 +13,109 @@
          <v-icon dark>mdi-plus</v-icon>
        </v-btn>
     </v-col>
+        <v-col class="mb-1">
+            <!-- modal para asignar habitaciones -->
+     <template>
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Asignar Habitaciones 
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Asignar Habitaciones</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                v-model="room.amount"
+                  label="Cantidad*"
+                  required
+                  type="number"
+                ></v-text-field>
+              </v-col>
+             
+           
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-autocomplete
+                    v-model="room.type_room"
+                  :items="['Estandar','Junior']"
+                  label="Tipo de Habitacion*"
+                ></v-autocomplete>
+              </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                >
+                  <v-autocomplete
+                    v-model="room.accommodation"
+                  :items="['Sencilla','Triple','Doble']"
+                  label="Acomodacion*"
+                ></v-autocomplete>
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    sm="6"
+                >
+                <!-- mostrar los hoteles -->
+                <v-autocomplete
+                    v-model="room.hotel_id"
+                  
+                    :items="hotels.map(hotel => hotel.data)"
+                    item-text="attributes.name" 
+                    item-value="hotel_id"
+                   
+                    label="Hotel*"
+
+                ></v-autocomplete>
+                </v-col>
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+           @click="assignedRoom"
+          >
+            Guardar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+</template>
+    </v-col>
     </v-row>
     <v-row class="text-center">
     <v-col cols="12">
@@ -48,27 +151,12 @@
         </v-simple-table>
     </v-col>
     </v-row>
-    <!-- ventana de diálogo para eliminar registros -->
-    <v-dialog v-model="dialog" max-width="350">
-        <v-card>
-            <v-card-title class="headline">¿Desea eliminar el registro?</v-card-title>
-            <v-card-actions>
-            <v-spacer></v-spacer>
-                <v-btn @click="dialog = false">Cancelar</v-btn>
-                <v-btn @click="confirmarBorrado(id)" color="error">Aceptar</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <!-- componente snackbar para mostrar mensaje de eliminación -->
-    <v-snackbar v-model="snackbar" color="success"> {{textsnack}}
-        <template v-slot:action="{attrs}">
-            <v-btn text v-bind="attrs" @click="snackbar = false">Cerrar</v-btn>
-        </template>
-    </v-snackbar>
+
     </v-container>
 </template>
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 export default {
     name:'listHotel',
     mounted(){
@@ -80,7 +168,13 @@ export default {
             hotels:null,
             id:null,
             snackbar:false,
-            textsnack:'¡Registro Eliminado!'
+            textsnack:'¡Registro Eliminado!',
+             room:{
+                amount: '',
+                type_room: '',
+                accommodation: '',
+                hotel_id: '',
+            }
         }
     },
     methods:{
@@ -95,7 +189,45 @@ export default {
             })
 
         },
-       
-    }
+        assignedRoom(){
+         
+           var router = this.$router;
+           const formData = new FormData();
+                 formData.append('amount',this.room.amount);
+                  formData.append('type_room',this.room.type_room);
+                  formData.append('accommodation',this.room.accommodation);
+                  formData.append('hotel_id',this.room.hotel_id);
+             
+            axios.post('http://0.0.0.0/api/room',formData)
+            .then(r => {
+                console.log(r);
+                this.dialog = false;
+                this.snackbar = true;
+                router.go();
+            })
+            .catch(function(error){
+            
+               let er = error.response.data.errors;
+                let msj = error.response.data.message;
+                swal("Error", msj, "error");
+                let mensaje = "Error no identificado";
+                if(er.amount){
+                    mensaje = er.amount[0];
+                }
+                if(er.type_room){
+                    mensaje = er.type_room[0];
+                }
+                if(er.accommodation){
+                    mensaje = er.accommodation[0];
+                }
+                if(er.hotel_id){
+                    mensaje = er.hotel_id[0];
+                }
+             
+                 swal("Error", mensaje, "error");
+            })
+                  }
+        },
+      
 }
 </script>

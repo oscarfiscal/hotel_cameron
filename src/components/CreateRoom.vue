@@ -2,41 +2,35 @@
     <v-container>
      <v-row class="text-center">    
       <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">Crear Hotel</h1>       
+        <h1 class="display-2 font-weight-bold mb-3">Crear Habitacion</h1>       
       </v-col>     
     </v-row>
     <v-row>
     <v-col>
-        <form v-on:submit.prevent="saveHotel()">
-        <v-text-field v-model="hotel.name"
+        <form v-on:submit.prevent="saveRoom()">
+        <v-text-field v-model="room.amount"
                 label="Nombre"
                 outlined
                 required   
         >
         </v-text-field>
-         <v-text-field
-                v-model="hotel.city"        
-                label="Ciudad"
-                type="text"                
-                outlined
-                required        
-            ></v-text-field>
+   
             <v-text-field
-                v-model="hotel.num_rooms"        
+                v-model="room.num_rooms"        
                 label="Numero de Habitaciones"
                 type="number"
                 outlined
                 required        
             ></v-text-field>
             <v-text-field
-                v-model="hotel.adress"        
+                v-model="room.adress"        
                 label="Direccion"
                 type="text"
                 outlined
                 required
             ></v-text-field>
             <v-text-field
-                v-model="hotel.nit"        
+                v-model="room.nit"        
                 label="Nit"
                 type="number"
                 outlined
@@ -58,27 +52,26 @@ export default {
     name:'createHotel',
     data(){
         return{
-            hotel:{
-                name:'',
-                city:'',
-                num_rooms:'',
-                adress:'',
-                nit:''
+            room:{
+                amount: '',
+                type_room: '',
+                accommodation: '',
+                hotel_id: '',
             }
         };
     },
     methods:{
-        saveHotel(){
+        saveRoom(){
             var router = this.$router;
            const formData = new FormData();
-                 formData.append('name',this.hotel.name);
-                formData.append('city',this.hotel.city);
-                formData.append('num_rooms',this.hotel.num_rooms);
-                formData.append('adress',this.hotel.adress);
-                formData.append('nit',this.hotel.nit);
+                 formData.append('name',this.room.name);
+                formData.append('city',this.room.city);
+                formData.append('num_rooms',this.room.num_rooms);
+                formData.append('adress',this.room.adress);
+                formData.append('nit',this.room.nit);
               
           
-           axios.post('http://0.0.0.0/api/hotel',formData)
+           axios.post('http://0.0.0.0/api/room',formData)
            .then(()=>{
                router.push('/hoteles');
            })
