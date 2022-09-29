@@ -315,7 +315,7 @@ export default {
     },
     methods:{
         getHotel(){
-            axios.get('https://damp-retreat-18356.herokuapp.com/api/hotel')
+            axios.get('http://0.0.0.0/api/hotel')
             .then(r => {
                 this.hotels = r.data.data;
             })
@@ -346,16 +346,6 @@ export default {
                   formData.append('accommodation',this.room.accommodation);
                   formData.append('hotel_id',this.room.hotel_id);
 
-            var  num_room = this.hotels.map(hotel => hotel.data.attributes.num_rooms);
-
-             if(this.room.amount <= num_room){
-                swal({
-                    title: "Error",
-                    text: "La cantidad de habitaciones no puede ser mayor a la cantidad de habitaciones del hotel",
-                    icon: "error",
-                    button: "Aceptar",
-                  });
-              }else{
             axios.post('https://damp-retreat-18356.herokuapp.com/api/room',formData)
               .then(r => {
                   console.log(r);
@@ -386,6 +376,5 @@ export default {
               })
                     }
         },
-    }
 }
 </script>
