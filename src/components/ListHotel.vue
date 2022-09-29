@@ -315,7 +315,7 @@ export default {
     },
     methods:{
         getHotel(){
-            axios.get('http://0.0.0.0/api/hotel')
+            axios.get('https://damp-retreat-18356.herokuapp.com/api/hotel')
             .then(r => {
                 this.hotels = r.data.data;
             })
