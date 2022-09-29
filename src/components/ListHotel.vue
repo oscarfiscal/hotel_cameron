@@ -345,36 +345,47 @@ export default {
                   formData.append('type_room',this.room.type_room);
                   formData.append('accommodation',this.room.accommodation);
                   formData.append('hotel_id',this.room.hotel_id);
-             
+
+            var  num_room = this.hotels.map(hotel => hotel.data.attributes.num_rooms);
+
+             if(this.room.amount <= num_room){
+                swal({
+                    title: "Error",
+                    text: "La cantidad de habitaciones no puede ser mayor a la cantidad de habitaciones del hotel",
+                    icon: "error",
+                    button: "Aceptar",
+                  });
+              }else{
             axios.post('https://damp-retreat-18356.herokuapp.com/api/room',formData)
-            .then(r => {
-                console.log(r);
-                this.dialog = false;
-                this.snackbar = true;
-                router.go();
-            })
-            .catch(function(error){
-            
-               let er = error.response.data.errors;
-                let msj = error.response.data.message;
-                swal("Error", msj, "error");
-                let mensaje = "Error no identificado";
-                if(er.amount){
-                    mensaje = er.amount[0];
-                }
-                if(er.type_room){
-                    mensaje = er.type_room[0];
-                }
-                if(er.accommodation){
-                    mensaje = er.accommodation[0];
-                }
-                if(er.hotel_id){
-                    mensaje = er.hotel_id[0];
-                }
-             
-                 swal("Error", mensaje, "error");
-            })
+              .then(r => {
+                  console.log(r);
+                  this.dialog = false;
+                  this.snackbar = true;
+                  router.go();
+              })
+              .catch(function(error){
+              
+                let er = error.response.data.errors;
+                  let msj = error.response.data.message;
+                  swal("Error", msj, "error");
+                  let mensaje = "Error no identificado";
+                  if(er.amount){
+                      mensaje = er.amount[0];
                   }
+                  if(er.type_room){
+                      mensaje = er.type_room[0];
+                  }
+                  if(er.accommodation){
+                      mensaje = er.accommodation[0];
+                  }
+                  if(er.hotel_id){
+                      mensaje = er.hotel_id[0];
+                  }
+              
+                  swal("Error", mensaje, "error");
+              })
+                    }
         },
+    }
 }
 </script>
